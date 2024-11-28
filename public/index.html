@@ -10,7 +10,8 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 0;
-            background-color: #ffffff;
+            background-color: #e4e4e49f;
+            max-width: 100%;
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -75,7 +76,8 @@
     border: 1px solid #ccc; /* Adds a light gray border */
     border-radius: 5px;     /* Adds rounded corners */
     padding: 10px;          /* Adds some inner spacing for a cleaner look */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff; /* Optional: Adds a subtle shadow */
 }
 
 
@@ -102,6 +104,13 @@
         }
 
         .container-schedule { 
+            width: 70%;
+            margin: 0 auto;  
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .container-edit { 
             width: 70%;
             margin: 0 auto;  
             align-items: center;
@@ -137,11 +146,11 @@
 
 
         .response {
-    background: #f9f9f9;
+    background: #ffffff;
     padding: 10px;
     border: 1px solid #ddd;
     margin-top: 10px;
-    max-height: 600px;
+    max-height: 900px;
     overflow: auto;
 
     display: grid; /* Or 'display: grid' */
@@ -150,12 +159,14 @@
 }
 
         #webhookUrlsContainer div {
+            background-color: #ffffff;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
 
 #webhookUrlsContainer input[type="checkbox"] {
+    background-color: #ffffff;
     margin-right: 10px; /* Adds space between the checkbox and label */
 }
 
@@ -164,6 +175,7 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 30px;
+    background-color: #ffffff;
 }
 th, td {
     padding: 10px;
@@ -174,12 +186,6 @@ th {
     background-color: #f4f4f4;
 }
 
-/* Button styling */
-button {
-    padding: 5px 10px;
-    margin: 5px;
-    cursor: pointer;
-}
 
 /* Modal styling */
 .modal {
@@ -318,6 +324,8 @@ button {
         <input type="text" id="schedule-response" readonly>
         <div class="container-schedule"></div>
         </div>
+
+        <div class="container-edit">
 <!-- Webhook Table -->
 <h2>Webhooks</h2>
 <table id="webhookTable">
@@ -349,6 +357,7 @@ button {
            <!-- Message rows will be inserted here -->
         </tbody>
     </table>
+</div>
 
 
 
