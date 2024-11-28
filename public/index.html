@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook Message Scheduler</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #ffffff;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        h1 {
+            display: flex;
+            justify-content: center;  
+            align-items: center; 
+            margin-top: 60px;
+            margin-bottom: 100px;
+            color: #f79749;        
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 700;         
+            line-height: 1.2;         
+        }
+
+        h2 {
+            color: #f79749;        
+            font-family: 'Montserrat', sans-serif; 
+            font-weight: 700;         
+            line-height: 1.2;         
+        }
+
+        #json-editor {
+        
+            height: 400px;
+            width: 1325px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #f87e1a;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        button:hover {
+            background-color: #d16206;
+        }
+        .container {
+            
+            margin: 0 auto;
+        }
+
+        .container-url {        
+            width: 70%;
+            margin: 0 auto;  
+            align-items: center; 
+            margin-bottom: 80px;  
+        }
+
+        .select-url {        
+    width: 100%;
+    margin: 0 auto;  
+    align-items: center; 
+    margin-top: 10px;
+    border: 1px solid #ccc; /* Adds a light gray border */
+    border-radius: 5px;     /* Adds rounded corners */
+    padding: 10px;          /* Adds some inner spacing for a cleaner look */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Adds a subtle shadow */
+}
+
+
+        .button-mid {
+            margin: 0 auto;  
+            display: flex;
+            justify-content: center;  
+            align-items: center; 
+         
+        }
+
+        .button-viewer {
+            display: flex;
+            justify-content: center;  
+            align-items: center;
+            gap: 10px;        
+        }
+
+        .container-message { 
+            width: 70%;
+            margin: 0 auto;  
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .container-schedule { 
+            width: 70%;
+            margin: 0 auto;  
+            align-items: center;
+            margin-bottom: 80px;
+        }
+
+        .container-dataviewer { 
+            width: 70%;
+            margin: 0 auto;  
+            align-items: center;
+        }
+
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+          font-size: small;
+        }
+
+        #data-viewer {
+        line-height: 2; /* Increases vertical spacing between lines */
+        white-space: pre-wrap; /* Ensures whitespace is preserved */
+    }
+
+
+        .response {
+    background: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    max-height: 600px;
+    overflow: auto;
+
+    display: grid; /* Or 'display: grid' */
+    flex-direction: column; /* Arrange items vertically */
+    gap: 15px; /* Add space between each data item */
+}
+
+        #webhookUrlsContainer div {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+#webhookUrlsContainer input[type="checkbox"] {
+    margin-right: 10px; /* Adds space between the checkbox and label */
+}
+
+/* Basic table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+th {
+    background-color: #f4f4f4;
+}
+
+/* Button styling */
+button {
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+/* Modal styling */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.4); 
+    padding-top: 60px; 
+}
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 20px;
+    width: 80%;
+}
+.close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.close-btn2 {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn2:hover,
+.close-btn2focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+  }
+  .popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .popup-content form {
+    display: flex;
+    flex-direction: column;
+  }
+  .popup-content input {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .popup-content button {
+    padding: 10px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+  }
+  .popup-content button[type="button"] {
+    background-color: #f44336;
+  }
+
+
+
+
+    </style>
+</head>
+<body>
+    <h1>Discord Webhook Message Scheduler</h1>
+    <div class="container">
+        <div class="container-top">
+        
+        <div class="container-url">
+        <h2>Add Webhook URL</h2>
+        <input type="text" id="webhook-name" placeholder="Enter Webhook Name">
+        <input type="text" id="webhook-url" placeholder="Enter Webhook URL">
+         <button class="button-mid" onclick="addWebhook()">Add Webhook</button>
+         <input type="text" id="webhook-response" readonly>
+
+        </div>
+
+        <div class="container-message">
+        <h2>Add Message</h2>
+        <input type="text" id="message-name" placeholder="Enter Message Name">
+        <div id="json-editor"></div>
+        <button class="button-mid" onclick="saveMessage()">Save Message</button>
+        <input type="text" id="message-response" readonly>
+        </div>
+        </div>
+
+        <div class="container-schedule">
+        <h2>Schedule a Message</h2>
+        <select id="message-id">
+            <option value="">Select Message</option>
+        </select>
+        
+
+        <div class="select-url">
+            <label for="webhookSelect">Select Webhook URL(s):</label><br>
+            <div id="webhookUrlsContainer"></div> <!-- Container where checkboxes will be dynamically added -->
+        </div>
+
+        <br>
+        <label for="schedule-time">Select Time:</label>
+        <input type="datetime-local" id="schedule-time"><br>
+        <select id="schedule-repetition">
+            <option value="" disabled selected>Select Repeat Frequency</option>
+            <option value="none">None</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+        </select>
+        <button class="button-mid" onclick="scheduleMessage()">Schedule Message</button>
+        <input type="text" id="schedule-response" readonly>
+        <div class="container-schedule"></div>
+        </div>
+<!-- Webhook Table -->
+<h2>Webhooks</h2>
+<table id="webhookTable">
+    <thead>
+        <tr>
+            <th>Webhook Name</th>
+            <th>View</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Webhook rows will be inserted here -->
+    </tbody>
+</table>
+
+<!-- Message Table -->
+<h2>Messages</h2>
+<table id="messageTable">
+    <thead>
+        <tr>
+            <th>Message Name</th>
+            <th>View</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+           <!-- Message rows will be inserted here -->
+        </tbody>
+    </table>
+
+
+
+        <div class="container-schedule">
+        <h2>Data Viewer</h2>
+        <div class="button-viewer">
+        <button onclick="fetchWebhooks()">View Webhooks</button>
+        <button onclick="fetchMessages()">View Messages</button>
+        <button onclick="fetchSchedules()">View Schedules</button>
+        </div>
+        <!-- <input type="text" id="data-viewer" class="response" readonly> -->
+
+        
+        <p id="data-viewer" class="response"></p>
+        
+        </div>
+        
+         
+
+    <!-- Modal for View URL -->
+    <div id="viewModalUrl" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Webhook URL</h2>
+            <p id="webhookUrl"></p>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal for View URL -->
+    <div id="viewModalMessage" class="modal">
+        <div class="modal-content">
+            <span class="close-btn2">&times;</span>
+            <h2>Webhook Message</h2>
+            <p id="webhookMessage"></p>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+<div id="webhookModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Edit Webhook</h2>
+      <form id="webhookForm">
+        <label for="webhookUrl">Webhook URL:</label>
+        <input type="text" id="webhookUrl" name="webhookUrl" placeholder="Enter webhook URL" required />
+        
+        <label for="webhookName">Webhook Name:</label>
+        <input type="text" id="webhookName" name="webhookName" placeholder="Enter webhook name" required />
+  
+        <button type="submit">Save Changes</button>
+      </form>
+    </div>
+  </div>
+    
+    </div>
+
+    <script>
+
+
+        // View webhook URL in a popup
+const viewUrl = (index) => {
+    fetch('/getWebhooks')
+        .then(response => response.json())
+        .then(webhooks => {
+            const url = webhooks[index].url;
+            document.getElementById('webhookUrl').textContent = url;
+            document.getElementById('viewModalUrl').style.display = 'block';
+        });
+};
+
+const viewMessage = (index) => {
+    fetch('/getMessages')
+        .then(response => response.json())
+        .then(webhooks => {
+            const data = webhooks[index].data;
+            document.getElementById('webhookMessage').textContent = JSON.stringify(data);
+            document.getElementById('viewModalMessage').style.display = 'block';
+        });
+};
+
+        // Function to load and display webhooks and messages
+const loadData = async () => {
+    // Fetch data from the backend
+    const webhooksResponse = await fetch('/getWebhooks');
+    const webhooks = await webhooksResponse.json();
+
+    console.log(webhooks);
+
+    const messagesResponse = await fetch('/getMessages');
+    const messages = await messagesResponse.json();
+
+    // Populate Webhook table
+    const webhookTableBody = document.getElementById('webhookTable').getElementsByTagName('tbody')[0];
+    webhooks.forEach((webhook, index) => {
+        const row = webhookTableBody.insertRow();
+        row.innerHTML = `
+            <td>${webhook.name}</td>
+            <td><button class="view-btn" onclick="viewUrl(${index})">👁️</button></td>
+            <td><button class="edit-btn" onclick="updateWebhook(${index})">Edit</button></td>
+            <td><button class="delete-btn" onclick="deleteWebhook(${index})">Delete</button></td>
+        `;
+    });
+
+    // Populate Message table
+    const messageTableBody = document.getElementById('messageTable').getElementsByTagName('tbody')[0];
+    messages.forEach((message, index) => {
+        const row = messageTableBody.insertRow();
+        row.innerHTML = `
+            <td>${message.name}</td>
+            <td><button class="view-btn" onclick="viewMessage(${index})">👁️</button></td>
+            <td><button class="edit-btn" onclick="updateMessage(${index})">Edit</button></td>
+            <td><button class="delete-btn" onclick="deleteMessage(${index})">Delete</button></td>
+        `;
+    });
+};
+
+loadData();
+
+ const updateWebhook = async (index) => {
+    const newName = prompt('Enter the new name for the webhook:');
+    const newUrl = prompt('Enter the new URL for the webhook:');
+
+    if (!newName || !newUrl) {
+        alert('Name and URL are required to update the webhook.');
+        return;
+    }
+
+    const response = await fetch('/updateWebhook', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ index, name: newName, url: newUrl })
+    });
+
+    if (response.ok) {
+        alert('Webhook updated successfully!');
+        fetchWebhooks();
+        location.reload(); // Refresh the list of webhooks
+    } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+    }
+}
+
+const updateMessage = async (index) => {
+    const newName = prompt('Enter the new name for the message:');
+    const newData = prompt('Enter the new message:');
+    newParsedData = JSON.parse(newData);
+    
+    if (!newName || !newParsedData) {
+        alert('Name and Message are required to update the message.');
+        return;
+    }
+
+    const response = await fetch('/updateMessage', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id:index, name: newName, data: newParsedData })
+    });
+
+    if (response.ok) {
+        alert('Message updated successfully!');
+        fetchMessages();
+        location.reload(); // Refresh the list of webhooks
+    } else {
+        const error = await response.json();
+        alert(`Error: ${error.message}`);
+    }
+}
+
+// Open the modal
+function editWebhook(index) {
+  console.log(`Editing webhook at index ${index}`);
+  
+  // Populate fields dynamically if needed
+  const webhookUrlInput = document.getElementById("webhookUrl");
+  const webhookNameInput = document.getElementById("webhookName");
+  
+  // Example dynamic data population
+  webhookUrlInput.value = `https://example.com/webhook/${index}`;
+  webhookNameInput.value = `Webhook ${index}`;
+
+  // Show the modal
+  const modal = document.getElementById("webhookModal");
+  modal.style.display = "block";
+}
+
+// Close the modal
+function closeModal() {
+  const modal = document.getElementById("webhookModal");
+  modal.style.display = "none";
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+  const modal = document.getElementById("webhookModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+};
+
+
+
+
+// Modal close button
+document.querySelector('.close-btn').addEventListener('click', () => {
+    document.getElementById('viewModalUrl').style.display = 'none';
+    
+});
+
+document.querySelector('.close-btn2').addEventListener('click', () => {
+    document.getElementById('viewModalMessage').style.display = 'none';
+
+});
+
+
+        const editor = ace.edit("json-editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/json");
+        editor.session.setValue('{}'); // Initialize with empty JSON object
+
+        async function addWebhook() {
+    const name = document.getElementById("webhook-name").value;
+    const url = document.getElementById("webhook-url").value;
+    if (!name || !url) return alert("Webhook name and URL are required");
+
+    const response = await fetch('/addWebhook', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, url })
+    });
+    const result = await response.json();
+    alert("Webhook URL added")
+    document.getElementById("webhook-response").value = JSON.stringify(result, null, 2);
+    loadWebhooks(); // Refresh the webhooks
+}
+
+
+
+        // Load saved webhooks from the server
+        function loadWebhooks() {
+    fetch('/getWebhooks')
+        .then(response => response.json())
+        .then(data => {
+            const webhookUrlsContainer = document.getElementById('webhookUrlsContainer');
+            webhookUrlsContainer.innerHTML = ''; // Clear previous checkboxes
+
+            data.forEach((webhook, index) => {
+                const checkboxWrapper = document.createElement('div');
+                checkboxWrapper.innerHTML = 
+                    `<label for="url${index + 1}"><br>${webhook.name} <br><br>(${webhook.url})</label> <input type="checkbox" id="url${index + 1}" name="webhookUrls" value="${webhook.url}">`;
+                webhookUrlsContainer.appendChild(checkboxWrapper);
+            });
+        });
+}
+
+async function saveMessage() {
+    const name = document.getElementById("message-name").value;
+    const jsonData = editor.session.getValue();
+    if (!name) return alert("Message name is required");
+
+    try {
+        const parsedData = JSON.parse(jsonData); // Validate JSON
+        const response = await fetch('/addMessage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, data: parsedData })
+        });
+        const result = await response.json();
+        alert("JSON message added")
+        document.getElementById("message-response").value = JSON.stringify(result, null, 2);
+        fetchMessages(); // Refresh messages
+    } catch (e) {
+        alert('Invalid JSON');
+    }
+}
+
+        async function scheduleMessage() {
+            const messageId = document.getElementById("message-id").value;
+            const selectedUrls = Array.from(document.querySelectorAll('input[name="webhookUrls"]:checked')).map(input => input.value);
+            const scheduledTime = document.getElementById("schedule-time").value;
+            const repetitionType = document.getElementById("schedule-repetition").value;
+
+            if (!messageId || !selectedUrls || !scheduledTime || !repetitionType) {
+                return alert("Message ID, URLs, and scheduled time are required");
+            }
+
+            const response = await fetch('/schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messageId, selectedUrls, scheduledTime, repetitionType })
+            });
+            const result = await response.json();
+            alert("Message added to schedule")
+            document.getElementById("schedule-response").value = JSON.stringify(result, null, 2);
+            fetchSchedules(); // Refresh schedules
+        }
+
+        async function fetchWebhooks() {
+            const response = await fetch('/getWebhooks');
+            const result = await response.json();
+            document.getElementById("data-viewer").innerText = JSON.stringify(result, null, 2);
+        }
+
+        async function fetchMessages() {
+    const response = await fetch('/getMessages');
+    const result = await response.json();
+    document.getElementById("data-viewer").innerText = JSON.stringify(result, null, 2);
+    const messageDropdown = document.getElementById("message-id");
+    messageDropdown.innerHTML = '<option value="">Select Message</option>';
+    result.forEach(message => {
+        const option = document.createElement("option");
+        option.value = message.id;
+        option.textContent = `${message.name} (ID: ${message.id})`;
+        messageDropdown.appendChild(option);
+    });
+}
+
+
+        async function fetchSchedules() {
+            const response = await fetch('/getSchedules');
+            const result = await response.json();
+            document.getElementById("data-viewer").innerText = JSON.stringify(result, null, 2)
+        }
+
+        loadWebhooks();
+        // Load initial data
+        fetchMessages();
+    </script>
+</body>
+</html>

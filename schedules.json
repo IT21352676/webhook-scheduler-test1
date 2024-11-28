@@ -1,0 +1,43 @@
+[
+  {
+    "messageId": 1,
+    "selectedUrls": [
+      "https://discord.com/api/webhooks/1310665985182928918/pP53mLOWeVwZwbNXY9FWO3svA1eDOWhLqMzt6otSOH58CrBe-Xg5oOC4j28UpSKfAz4J"
+    ],
+    "scheduledTime": "2024-11-27T20:11",
+    "repetitionType": "none",
+    "status": "sent",
+    "nextRun": "2024-11-27T14:41:00.000Z"
+  },
+  {
+    "messageId": 1,
+    "selectedUrls": [
+      "https://discord.com/api/webhooks/1310665985182928918/pP53mLOWeVwZwbNXY9FWO3svA1eDOWhLqMzt6otSOH58CrBe-Xg5oOC4j28UpSKfAz4J",
+      "https://discord.com/api/webhooks/1310827559855984701/usTBF-iT4HdxW17aKBBEsiah-0VY_eHCw8WDngrDfaK09F9E8KyETC6rwAyAQGfdy65z"
+    ],
+    "scheduledTime": "2024-11-27T20:13",
+    "repetitionType": "none",
+    "status": "sent",
+    "nextRun": "2024-11-27T14:43:00.000Z"
+  },
+  {
+    "messageId": 1,
+    "selectedUrls": [
+      "https://discord.com/api/webhooks/1310827559855984701/usTBF-iT4HdxW17aKBBEsiah-0VY_eHCw8WDngrDfaK09F9E8KyETC6rwAyAQGfdy65z"
+    ],
+    "scheduledTime": "2024-11-28T09:26",
+    "repetitionType": "",
+    "status": "sent",
+    "nextRun": "2024-11-28T03:56:00.000Z"
+  },
+  {
+    "messageId": 4,
+    "selectedUrls": [
+      "https://discord.com/api/webhooks/1310827559855984701/usTBF-iT4HdxW17aKBBEsiah-0VY_eHCw8WDngrDfaK09F9E8KyETC6rwAyAQGfdy65z"
+    ],
+    "scheduledTime": "2024-11-28T09:28",
+    "repetitionType": "none",
+    "status": "sent",
+    "nextRun": "2024-11-28T03:58:00.000Z"
+  }
+]
