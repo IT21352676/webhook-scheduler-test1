@@ -270,6 +270,11 @@ th {
   .popup-content button[type="button"] {
     background-color: #f44336;
   }
+  .visibility-icon {
+            width: 24px;
+            height: 24px;
+            fill: #ffffff; /* Icon color */
+        }
 
 
 
@@ -324,6 +329,7 @@ th {
         <input type="text" id="schedule-response" readonly>
         <div class="container-schedule"></div>
         </div>
+    
 
         <div class="container-edit">
 <!-- Webhook Table -->
@@ -416,6 +422,7 @@ th {
     </div>
 
     <script>
+       
 
 
         // View webhook URL in a popup
@@ -456,7 +463,9 @@ const loadData = async () => {
         const row = webhookTableBody.insertRow();
         row.innerHTML = `
             <td>${webhook.name}</td>
-            <td><button class="view-btn" onclick="viewUrl(${index})">👁️</button></td>
+            <td><button class="view-btn" onclick="viewUrl(${index})"><svg class="visibility-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5c-7 0-10 6.6-10 6.6s3 6.6 10 6.6 10-6.6 10-6.6-3-6.6-10-6.6zm0 11.1a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
+        </svg></button></td>
             <td><button class="edit-btn" onclick="updateWebhook(${index})">Edit</button></td>
             <td><button class="delete-btn" onclick="deleteWebhook(${index})">Delete</button></td>
         `;
@@ -468,7 +477,9 @@ const loadData = async () => {
         const row = messageTableBody.insertRow();
         row.innerHTML = `
             <td>${message.name}</td>
-            <td><button class="view-btn" onclick="viewMessage(${index})">👁️</button></td>
+            <td><button class="view-btn" onclick="viewMessage(${index})"><svg class="visibility-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5c-7 0-10 6.6-10 6.6s3 6.6 10 6.6 10-6.6 10-6.6-3-6.6-10-6.6zm0 11.1a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
+        </svg></button></td>
             <td><button class="edit-btn" onclick="updateMessage(${index})">Edit</button></td>
             <td><button class="delete-btn" onclick="deleteMessage(${index})">Delete</button></td>
         `;

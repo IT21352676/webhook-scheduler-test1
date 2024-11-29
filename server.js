@@ -175,6 +175,7 @@ app.put('/updateWebhook', (req, res) => {
 // Update an existing webhook
 app.put('/updateMessage', (req, res) => {
     const { id, name, data } = req.body;
+    const actualid = id+1;
 
     if (id === undefined || !name || !data) {
         return res.status(400).json({ message: 'Index, name, and URL are required' });
@@ -184,7 +185,7 @@ app.put('/updateMessage', (req, res) => {
         return res.status(404).json({ message: 'Message not found' });
     }
 
-    messages[id] = { name, data }; // Update the webhook
+    messages[id] = { id:actualid, name, data }; // Update the webhook
     saveData(); // Save changes to file
     res.json({ message: 'Message updated successfully' });
 });
