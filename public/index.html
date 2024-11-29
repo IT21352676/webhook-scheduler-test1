@@ -11,7 +11,7 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 0;
-            background-color: #ffffff;
+            background-color: #bdbdbd;
             max-width: 100%;
         }
 
@@ -49,6 +49,19 @@
             border: 1px solid #ccc;
             margin-bottom: 20px;
            
+        }
+
+        .button-eye {
+            background-color: #f87e1a00;
+            color: rgba(255, 255, 255, 0);
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+        .button-eye:hover {
+            background-color: #f87e1a5d;
+            
         }
 
         button {
@@ -173,10 +186,10 @@
     align-items: center; /* Center-align the content */
     justify-content: center; 
     margin: 0 auto;  
-            border: 2px solid #ccc; /* Adds a light gray border */
+            border: 3px solid rgb(245, 99, 21); /* Adds a light gray border */
     border-radius: 50px;     /* Adds rounded corners */
-    padding: 10px 0 -10px;         /* Adds some inner spacing for a cleaner look */
-    box-shadow: 0px 10px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 0 10px;         /* Adds some inner spacing for a cleaner look */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     background-color: #eaeaea;
             width: 50%;
             margin: 0 auto;  
@@ -353,7 +366,7 @@ th {
   .visibility-icon {
             width: 24px;
             height: 24px;
-            fill: #ffffff; /* Icon color */
+            fill: #f87e1a; /* Icon color */
         }
 
         .discord-icon {
@@ -557,7 +570,7 @@ const loadData = async () => {
         const row = webhookTableBody.insertRow();
         row.innerHTML = `
             <td>${webhook.name}</td>
-            <td><button class="view-btn" onclick="viewUrl(${index})"><svg class="visibility-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <td><button class="button-eye" onclick="viewUrl(${index})"><svg class="visibility-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M12 4.5c-7 0-10 6.6-10 6.6s3 6.6 10 6.6 10-6.6 10-6.6-3-6.6-10-6.6zm0 11.1a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
         </svg></button></td>
             <td><button class="edit-btn" onclick="updateWebhook(${index})">Edit</button></td>
@@ -571,7 +584,7 @@ const loadData = async () => {
         const row = messageTableBody.insertRow();
         row.innerHTML = `
             <td>${message.name}</td>
-            <td><button class="view-btn" onclick="viewMessage(${index})"><svg class="visibility-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <td><button class="button-eye" onclick="viewMessage(${index})"><svg class="visibility-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M12 4.5c-7 0-10 6.6-10 6.6s3 6.6 10 6.6 10-6.6 10-6.6-3-6.6-10-6.6zm0 11.1a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
         </svg></button></td>
             <td><button class="edit-btn" onclick="updateMessage(${index})">Edit</button></td>
