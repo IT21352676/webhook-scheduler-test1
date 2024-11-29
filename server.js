@@ -172,7 +172,7 @@ app.put('/updateWebhook', (req, res) => {
     res.json({ message: 'Webhook updated successfully' });
 });
 
-// Update an existing webhook
+// Update an existing message
 app.put('/updateMessage', (req, res) => {
     const { id, name, data } = req.body;
     const actualid = id+1;
@@ -188,6 +188,30 @@ app.put('/updateMessage', (req, res) => {
     messages[id] = { id:actualid, name, data }; // Update the webhook
     saveData(); // Save changes to file
     res.json({ message: 'Message updated successfully' });
+});
+
+// Delete webhook
+app.post('/deleteWebhook', (req, res) => {
+    const { index } = req.body;
+    if (index >= 0 && index < webhooks.length) {
+        webhooks.splice(index, 1); // Remove the webhook
+        saveData();
+        res.json({ message: 'Webhook deleted successfully' });
+    } else {
+        res.status(400).json({ message: 'Invalid webhook index' });
+    }
+});
+
+// Delete message
+app.post('/deleteMessage', (req, res) => {
+    const { index } = req.body;
+    if (index >= 0 && index < messages.length) {
+        messages.splice(index, 1); // Remove the webhook
+        saveData();
+        res.json({ message: 'Message deleted successfully' });
+    } else {
+        res.status(400).json({ message: 'Invalid message index' });
+    }
 });
 
 // Serve the index.html page
