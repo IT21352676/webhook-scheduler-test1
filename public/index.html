@@ -324,6 +324,19 @@ th {
     cursor: pointer;
 }
 
+.close-btn3 {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn3:hover,
+.close-btn3focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .popup {
     position: fixed;
     top: 0;
@@ -467,6 +480,24 @@ th {
            <!-- Message rows will be inserted here -->
         </tbody>
     </table>
+
+
+    <!-- Message Table -->
+<h3>Schedules</h3>
+<table id="scheduleTable">
+    <thead>
+        <tr>
+            <th>Selected Message ID</th>
+            <th>Selected URLs</th>
+            <th>Repetation Type </th>
+            <th>Status</th>
+            <th>Scheduled Time</th>
+        </tr>
+    </thead>
+    <tbody>
+           <!-- Message rows will be inserted here -->
+        </tbody>
+    </table>
 </div>
 </div>
 
@@ -504,6 +535,15 @@ th {
             <span class="close-btn2">&times;</span>
             <h2>Webhook Message</h2>
             <p id="webhookMessage"></p>
+        </div>
+    </div>
+
+    <!-- Modal for View URL -->
+    <div id="viewModalSchedule" class="modal">
+        <div class="modal-content">
+            <span class="close-btn3">&times;</span>
+            <h2>Selected Webhooks</h2>
+            <p id="webhookSchedule"></p>
         </div>
     </div>
 
@@ -553,6 +593,41 @@ const viewMessage = (index) => {
         });
 };
 
+const viewSchedule = (index) => {
+    fetch('/getSchedules')
+        .then(response => response.json())
+        .then(schedules => {
+            const data = schedules[index].selectedUrls;
+
+            const webhookScheduleElement = document.getElementById('webhookSchedule');
+            webhookScheduleElement.innerHTML = ''; // Clear previous content
+
+            // Loop through the URLs and create a line for each
+            data.forEach(url => {
+                const urlElement = document.createElement('p'); // Create a new <p> element
+                urlElement.textContent = url; // Set the text content to the URL
+                webhookScheduleElement.appendChild(urlElement); // Append the <p> to the container
+            });
+
+            // Display the modal
+            document.getElementById('viewModalSchedule').style.display = 'block';
+        })
+        .catch(error => {
+            console.error('Error fetching schedules:', error);
+        });
+};
+
+
+// async function viewSchedule(index) {
+//             const response = await fetch('/getSchedules');
+//             const result = await response.json();
+//             const data = result[index];
+//             console.log(data);
+//             //document.getElementById('webhookSchedule').textContent = JSON.stringify(data);
+//             //document.getElementById('viewModalSchedule').style.display = 'block';
+            
+//         }
+
         // Function to load and display webhooks and messages
 const loadData = async () => {
     // Fetch data from the backend
@@ -563,6 +638,9 @@ const loadData = async () => {
 
     const messagesResponse = await fetch('/getMessages');
     const messages = await messagesResponse.json();
+
+    const schedulesResponse = await fetch('/getSchedules');
+    const schedules = await schedulesResponse.json();
 
     // Populate Webhook table
     const webhookTableBody = document.getElementById('webhookTable').getElementsByTagName('tbody')[0];
@@ -591,7 +669,25 @@ const loadData = async () => {
             <td><button class="delete-btn" onclick="deleteMessage(${index})">Delete</button></td>
         `;
     });
+
+    // Populate Message table
+    const scheduleTableBody = document.getElementById('scheduleTable').getElementsByTagName('tbody')[0];
+    schedules.forEach((schedule, index) => {
+        const row = scheduleTableBody.insertRow();
+        row.innerHTML = `
+            <td>${schedule.messageId}</td>
+            <td><button class="button-eye" onclick="viewSchedule(${index})"><svg class="visibility-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5c-7 0-10 6.6-10 6.6s3 6.6 10 6.6 10-6.6 10-6.6-3-6.6-10-6.6zm0 11.1a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9zm0-7.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
+        </svg></button></td>
+        <td>${schedule.repetitionType}</td>
+        <td>${schedule.status}</td>
+        <td>${schedule.scheduledTime}</td>
+    
+            
+        `;
+    });
 };
+
 
 loadData();
 
@@ -719,6 +815,10 @@ document.querySelector('.close-btn2').addEventListener('click', () => {
 
 });
 
+document.querySelector('.close-btn3').addEventListener('click', () => {
+    document.getElementById('viewModalSchedule').style.display = 'none';
+
+});
 
         const editor = ace.edit("json-editor");
         editor.setTheme("ace/theme/monokai");
