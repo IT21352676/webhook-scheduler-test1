@@ -8,6 +8,9 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
+RUN apt-get update && apt-get install -y tzdata
+ENV TZ=Asia/Colombo
+
 # Copy the entire project into the container
 COPY . .
 

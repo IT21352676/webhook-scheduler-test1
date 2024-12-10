@@ -18,6 +18,7 @@
     "body-parser": "^1.20.3",
     "express": "^4.21.1",
     "jsoneditor": "^10.1.1",
+    "moment-timezone": "^0.5.46",
     "node-cron": "^3.0.3",
     "node-schedule": "^2.1.1"
   },

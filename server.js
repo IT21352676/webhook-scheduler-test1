@@ -93,6 +93,8 @@ app.get('/getSchedules', (req, res) => {
     res.json(schedules);
 });
 
+const moment = require('moment-timezone');
+
 // Schedule a message
 app.post('/schedule', (req, res) => {
     const { messageId, selectedUrls, scheduledTime, repetitionType } = req.body;
@@ -115,16 +117,18 @@ app.post('/schedule', (req, res) => {
         scheduledTime,
         repetitionType,
         status: 'pending',
-        nextRun: new Date(scheduledTime)
+        nextRun: moment.tz(scheduledTime, "Asia/Colombo").toDate() // Convert to correct timezone
     };
 
     schedules.push(schedule);
     saveData();
 
-    // Schedule the message with cron job
-    const cronTime = new Date(scheduledTime);
-    const cronExpression = `${cronTime.getSeconds()} ${cronTime.getMinutes()} ${cronTime.getHours()} ${cronTime.getDate()} ${cronTime.getMonth() + 1} *`;
+    // Convert the scheduled time to server timezone for cron
+    const serverTime = moment.tz(schedule.nextRun, "Asia/Colombo").tz("Europe/Berlin");
+    const cronExpression = `${serverTime.seconds()} ${serverTime.minutes()} ${serverTime.hours()} ${serverTime.date()} ${serverTime.month() + 1} *`;
+    
     cron.schedule(cronExpression, () => sendScheduledMessage(schedule));
+
 
     res.json({ message: 'Message scheduled successfully' });
 });
