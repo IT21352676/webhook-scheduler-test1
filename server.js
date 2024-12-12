@@ -99,6 +99,8 @@ const moment = require('moment-timezone');
 app.post('/schedule', (req, res) => {
     const { messageId, selectedUrls, scheduledTime, repetitionType } = req.body;
 
+    console.log(scheduledTime);
+
     if (!messageId || !selectedUrls || !scheduledTime) {
         return res.status(400).json({ message: 'Message, URLs, and scheduled time are required' });
     }
@@ -111,27 +113,37 @@ app.post('/schedule', (req, res) => {
 
     console.log("Scheduling message: ", message.data); // Add this line to debug
 
+    // Convert scheduledTime to a Date object
+    let scheduledDate = new Date(scheduledTime);
+
+    // Add +5 hours and +30 minutes
+    scheduledDate.setHours(scheduledDate.getHours() );
+    scheduledDate.setMinutes(scheduledDate.getMinutes() );
+
+    // Create the schedule object with the updated scheduled time
     const schedule = {
         messageId: message.id,
         selectedUrls,
-        scheduledTime,
+        scheduledTime: scheduledTime, // Store the updated time in UTC
         repetitionType,
         status: 'pending',
-        nextRun: moment.tz(scheduledTime, "Asia/Colombo").toDate() // Convert to correct timezone
+        nextRun: scheduledDate
     };
 
     schedules.push(schedule);
     saveData();
 
-    // Convert the scheduled time to server timezone for cron
-    const serverTime = moment.tz(schedule.nextRun, "Asia/Colombo").tz("Europe/Berlin");
-    const cronExpression = `${serverTime.seconds()} ${serverTime.minutes()} ${serverTime.hours()} ${serverTime.date()} ${serverTime.month() + 1} *`;
-    
-    cron.schedule(cronExpression, () => sendScheduledMessage(schedule));
+    console.log(scheduledDate)
+    // Generate cron expression based on the updated scheduled time
+    const cronTime = new Date(scheduledDate);
+    const cronExpression = `${cronTime.getSeconds()} ${cronTime.getMinutes()} ${cronTime.getHours()} ${cronTime.getDate()} ${cronTime.getMonth() + 1} *`;
 
+    // Schedule the cron job
+    cron.schedule(cronExpression, () => sendScheduledMessage(schedule));
 
     res.json({ message: 'Message scheduled successfully' });
 });
+
 
 // Send scheduled message to webhooks
 const sendScheduledMessage = (schedule) => {

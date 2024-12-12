@@ -105,5 +105,15 @@
     "repetitionType": "none",
     "status": "pending",
     "nextRun": "2024-12-10T16:24:00.000Z"
+  },
+  {
+    "messageId": 2,
+    "selectedUrls": [
+      "https://discord.com/api/webhooks/1311430392666128524/LbwzrMEb-NChRH2teOJm3ccFDEdrGtKMQID-srI5FtMiMouprDaVupprz2ksocGcD8hN"
+    ],
+    "scheduledTime": "2024-12-12T14:50:00.000Z",
+    "repetitionType": "none",
+    "status": "sent",
+    "nextRun": "2024-12-12T14:50:00.000Z"
   }
 ]
